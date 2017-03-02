@@ -1,0 +1,49 @@
+FROM python:2-slim
+LABEL org.label-schema.name='musichub-back-base'
+
+ENV TERM="xterm-256color"
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements/base.txt /requirements.txt
+
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get install -y \
+	curl \
+	vim \
+    tmux \
+    build-essential \
+	python-tk \
+	git \
+	libjpeg-dev \
+	libpq-dev \
+	python-dev \
+	libev-dev \
+	libtiff5-dev \
+	zlib1g-dev \
+	libfreetype6-dev \
+	liblcms2-dev \
+	libwebp-dev \
+	tcl8.6-dev \
+	tk8.6-dev \
+	libssl-dev \
+	libffi-dev && \
+    pip install -U pip 3to2 && \
+    pip install -r /requirements.txt && \
+#    apt-get remove --purge -y \
+#	 build-essential \
+#	 libjpeg-dev \
+#	 libpq-dev \
+#	 python-dev \
+#	 libtiff5-dev \
+#	 zlib1g-dev \
+#	 libfreetype6-dev \
+#	 liblcms2-dev \
+#	 libwebp-dev \
+#	 tcl8.6-dev \
+#	 tk8.6-dev \
+#	 python-tk \
+#	 libssl-dev \
+#	 libffi-dev && \
+    apt-get autoremove -y &&  apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -1,0 +1,28 @@
+FROM holms/musichub_back_base:latest
+LABEL org.label-schema.name='musichub_backend'
+
+# Install python depedencies
+COPY requirements/dev.txt /requirements.txt
+RUN pip install -r /requirements.txt
+
+# Copy Code
+RUN mkdir -p /code
+COPY . /code
+
+# Handle statics
+WORKDIR /code
+#RUN python /code/manage.py collectstatic --noinput
+#RUN ln -s /code/django_app/static /static
+#WORKDIR /static/spiral/
+#RUN npm install
+
+# Launch the damned thing
+EXPOSE 8000
+WORKDIR /code
+CMD python django_app/wsgi.py
+
+# For debug purpose
+#cmd uwsgi --http-socket :8000 --master --module wsgi:application -b 32768 --pythonpath /code
+#cmd python django_app/manage.py runserver 0.0.0.0:8000
+
+
